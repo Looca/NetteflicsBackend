@@ -1,13 +1,5 @@
-const express = require('express');
-// const mongoConfig = require('./config/mongo');
+//Import the mongoose module
 var mongoose = require('mongoose');
-const router = require('./routes/routes.js');
-const bodyParser = require('body-parser');
-const LISTEN_PORT = '3000'
-const app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
 //Set up default mongoose connection
 var mongoDB = 'mongodb+srv://LukeFartwalker:$007007$@lukecluster-4bjri.mongodb.net/netteflics-dev?retryWrites=true&w=majority';
@@ -21,9 +13,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 db.once('open', function () {
-    console.log('------------ CONNESSO ------------')
+  console.log('------------ CONNESSO ------------')
 });
 
-app.use('/api', router);
-
-app.listen(LISTEN_PORT, () => { console.log('Server is running @ port ' + LISTEN_PORT) });
+exports.mongoose = mongoose;
