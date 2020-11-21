@@ -9,7 +9,7 @@ const expressSession = require('express-session')({
     secret: 'secret',
     resave: false,
     saveUninitialized: false
-  });
+});
 
 // create express app
 const app = express();
@@ -21,7 +21,7 @@ app.use(passport.session());
 app.use(express.static(__dirname));
 
 // Require Routes
-// require('./routes/routes')(app);
+require('./routes/routes')(app);
 // app.use('/api');
 
 const LISTEN_PORT = process.env.PORT || 3000;
@@ -39,7 +39,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(dbConfig.url, {
     useNewUrlParser: true, useUnifiedTopology: true
 }).then(() => {
-    console.log("Successfully connected to the database");    
+    console.log("Successfully connected to the database");
 }).catch(err => {
     console.log('Could not connect to the database. Exiting now...', err);
     process.exit();
