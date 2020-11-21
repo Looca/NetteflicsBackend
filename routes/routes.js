@@ -65,8 +65,8 @@ module.exports = (app) => {
 
     // USERS
     
-    app.route('/users/:action?/:id?')
+    /*app.route('/users/:action?/:id?')
           .get(connectEnsureLogin.ensureLoggedIn(), usersModel.findAll) // VERIFICARE
           .post(connectEnsureLogin.ensureLoggedIn(), usersModel.execute)
-          .put(connectEnsureLogin.ensureLoggedIn(), usersModel.execute);
+          .put(connectEnsureLogin.ensureLoggedIn(), usersModel.execute);*/
 }
