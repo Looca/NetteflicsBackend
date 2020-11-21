@@ -1,29 +1,53 @@
 const express = require('express');
-// const mongoConfig = require('./config/mongo');
-var mongoose = require('mongoose');
-const router = require('./routes/routes.js');
 const bodyParser = require('body-parser');
-const LISTEN_PORT = '3000'
+// Configuring the database
+const dbConfig = require('./config/mongo.js');
+const mongoose = require('mongoose');
+const passport = require('passport');
+
+const expressSession = require('express-session')({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false
+  });
+
+// create express app
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
-//Set up default mongoose connection
-var mongoDB = 'mongodb+srv://LukeFartwalker:$007007$@lukecluster-4bjri.mongodb.net/netteflics-dev?retryWrites=true&w=majority';
+app.use(passport.initialize());
+app.use(passport.session());
 
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+app.use(express.static(__dirname));
 
-//Get the default connection
-var db = mongoose.connection;
+// Require Routes
+require('./routes/routes')(app);
+// app.use('/api');
 
-//Bind connection to error event (to get notification of connection errors)
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+const LISTEN_PORT = process.env.PORT || 3000;
 
-db.once('open', function () {
-    console.log('------------ CONNESSO ------------')
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
+
+// parse requests of content-type - application/json
+app.use(bodyParser.json())
+app.use(expressSession);
+
+mongoose.Promise = global.Promise;
+
+// Connecting to the database
+mongoose.connect(dbConfig.url, {
+    useNewUrlParser: true, useUnifiedTopology: true
+}).then(() => {
+    console.log("Successfully connected to the database");    
+}).catch(err => {
+    console.log('Could not connect to the database. Exiting now...', err);
+    process.exit();
+});
+mongoose.set('useCreateIndex', true);
+// listen for requests
+app.listen(LISTEN_PORT, () => {
+    console.log("Server is listening on port " + LISTEN_PORT);
 });
 
-app.use('/api', router);
-
-app.listen(LISTEN_PORT, () => { console.log('Server is running @ port ' + LISTEN_PORT) });
+// ARRIVATO FINO A Implementing Local Authentication https://www.sitepoint.com/local-authentication-using-passport-node-js/
