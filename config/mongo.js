@@ -1,4 +1,4 @@
-//Import the mongoose module
+/*//Import the mongoose module
 var mongoose = require('mongoose');
 
 //Set up default mongoose connection
@@ -16,4 +16,8 @@ db.once('open', function () {
   console.log('------------ CONNESSO ------------')
 });
 
-exports.mongoose = mongoose;
+exports.mongoose = mongoose; */
+
+module.exports = {
+  url: 'mongodb+srv://LukeFartwalker:$007007$@lukecluster-4bjri.mongodb.net/netteflics-dev?retryWrites=true&w=majority'
+}
