@@ -21,7 +21,7 @@ app.use(passport.session());
 app.use(express.static(__dirname));
 
 // Require Routes
-require('./routes/routes')(app);
+// require('./routes/routes')(app);
 // app.use('/api');
 
 const LISTEN_PORT = process.env.PORT || 3000;
